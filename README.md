@@ -25,7 +25,25 @@ discovery to find and manage Brother QL Label Printers and an Impinj RFID reader
 ## Installation
 
 1. Clone this [repository](git@github.com:stuartlynne/traefik_racedb.git)
-2. make build-clean
+2. Edit the two files in dynamic to set the domain names for the services.
+3. make build-clean
+
+## RaceDB Configuration
+
+RaceDB is a Django application and requires that the domain name being used is added
+to the settings.py file, e.g.:
+
+```
+CSRF_TRUSTED_ORIGINS = ["https://racedb.wimsey.dev", ]
+```
+
+This can be done by editing the settings.py file in the RaceDB container, e.g. assuming "racedb_app" is the name of the container:
+```
+docker exec -it racedb_app bash
+cd /RaceDB/RaceDB
+echo "CSRF_TRUSTED_ORIGINS = ['https://racedb.wimsey.dev', ]" >> settings.py
+```
+
 
 
 
