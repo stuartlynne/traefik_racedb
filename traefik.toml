@@ -1,0 +1,35 @@
+[log]
+  level = "DEBUG"
+
+[api]
+  insecure = true
+
+[accessLog]
+  [accessLog.fields.names]
+    StartUTC = "drop"
+  filePath = "/logs/access.log"
+
+[entryPoints]
+  [entryPoints.web]
+    address = ":80"
+  [entryPoints.websecure]
+    address = ":443"
+
+[certificatesResolvers]
+  [certificatesResolvers.myresolver.acme]
+    caServer = "https://acme-v02.api.letsencrypt.org/directory"
+    email = "stuart.lynne@gmail.com"
+    storage = "/letsencrypt/acme.json"
+    [certificatesResolvers.myresolver.acme.dnsChallenge]
+      provider = "namecheap"
+      disablePropagationCheck = true
+      delayBeforeCheck = 90
+      resolvers = ["1.1.1.1:53", "8.8.8.8:53"]
+
+
+[providers]
+  [providers.docker]
+    exposedByDefault = true
+  [providers.file]
+    directory = "/dynamic"
+

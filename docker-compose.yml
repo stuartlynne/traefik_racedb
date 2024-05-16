@@ -1,0 +1,26 @@
+version: '3'
+services:
+  reverse-proxy:
+    image: traefik:v3.0
+    container_name: traefik-reverse-proxy
+    environment:
+      - "NAMECHEAP_API_USER=stuartlynne"
+      - "NAMECHEAP_API_KEY=140badea0c584bb2b054e4a61f8a81f0"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker"     
+      - "--providers.docker.exposedbydefault=true"   
+      - "--configFile=/etc/traefik/traefik.toml" # Specify the path to the configuration file
+    network_mode: host  # Run Traefik in host networking mode
+    volumes:       
+      - /etc/localtime:/etc/localtime:ro
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ./logs:/logs
+      - ./letsencrypt:/letsencrypt
+      - ./traefik.toml:/traefik.toml 
+      - ./dynamic:/dynamic          
+
+        
+
+
+
