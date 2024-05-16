@@ -20,8 +20,11 @@
     caServer = "https://acme-v02.api.letsencrypt.org/directory"
     email = "stuart.lynne@gmail.com"
     storage = "/letsencrypt/acme.json"
+    # See provider.env to set the credentials. These must be set in the environment
+    # and are specific to the provider you are using and specify below.
+    # See also: https://doc.traefik.io/traefik/v1.7/configuration/acme/#provider
     [certificatesResolvers.myresolver.acme.dnsChallenge]
-      provider = "namecheap"
+      provider = "namecheap"    # namecheap, cloudflare, route53, etc
       disablePropagationCheck = true
       delayBeforeCheck = 90
       resolvers = ["1.1.1.1:53", "8.8.8.8:53"]

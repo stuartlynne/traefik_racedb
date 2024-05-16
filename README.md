@@ -21,12 +21,34 @@ discovery to find and manage Brother QL Label Printers and an Impinj RFID reader
 - port 80 and 443 are passed through the firewall if you want to access the services from outside the host
 - an account at a DNS provider that allows access through an API and you have the API key
 - domain names for the services you want to run e.g.: racedb.wimsey.dev, qlmux.wimsey.dev
+- the local DNS server is configured to resolve the domain names to the host IP address
+
+
+## DNS API Configuration
+See provider.env for the required environment variables for the DNS provider.
 
 ## Installation
 
 1. Clone this [repository](git@github.com:stuartlynne/traefik_racedb.git)
 2. Edit the two files in dynamic to set the domain names for the services.
 3. make build-clean
+
+## Local DNS Configuration
+
+To access the services from within your network, you will need to configure your local DNS server to resolve the domain names to the host IP address.
+
+If you only need to access the services from the host (or perhaps a small number of hosts), you can add the domain names to the /etc/hosts file on each host.
+```
+192.168.40.16 racedb.wimsey.dev
+192.168.40.16 qlmuxproxy.wimsey.dev
+```
+
+On a PiHole server, you can add the following to the /etc/pihole/custom.list file:
+```
+192.168.40.16 racedb.wimsey.dev
+192.168.40.16 qlmuxproxy.wimsey.dev
+```
+
 
 ## RaceDB Configuration
 

@@ -1,22 +1,14 @@
 
 [http]
   [http.routers]
-
-    [http.routers.racedb-127]
-      rule = "Host(`127.0.0.1`)"
-      entryPoints = ["web", "websecure"]
-      service = "racedb-127-service"
-
-    [http.routers.racedb-external]
+    [http.routers.racedb]
       rule = "Host(`racedb.wimsey.dev`)"
       entryPoints = ["web", "websecure"]
-      service = "racedb-127-service"
-      [http.routers.racedb-external.tls]
+      service = "racedb-service"
+      [http.routers.racedb.tls]
         certResolver = "myresolver"
 
-
   [http.services]
-
-    [http.services.racedb-127-service.loadBalancer]
-      [[http.services.racedb-127-service.loadBalancer.servers]]
+    [http.services.racedb-service.loadBalancer]
+      [[http.services.racedb-service.loadBalancer.servers]]
         url = "http://localhost:9080"

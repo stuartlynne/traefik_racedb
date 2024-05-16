@@ -1,22 +1,16 @@
 
 [http]
   [http.routers]
-    [http.routers.qlmuxproxy-127]
-      rule = "Host(`127.0.0.1`)"
-      entryPoints = ["web", "websecure"]
-      service = "qlmuxproxy-127-service"
-
-    [http.routers.qlmuxproxy-external]
+    [http.routers.qlmuxproxy]
       rule = "Host(`qlmuxproxy.wimsey.dev`)"
       entryPoints = ["web", "websecure"]
-      service = "qlmuxproxy-127-service"
-      [http.routers.qlmuxproxy-external.tls]
+      service = "qlmuxproxy-service"
+      [http.routers.qlmuxproxy.tls]
         certResolver = "myresolver"
 
-
   [http.services]
-    [http.services.qlmuxproxy-127-service.loadBalancer]
-      [[http.services.qlmuxproxy-127-service.loadBalancer.servers]]
+    [http.services.qlmuxproxy-service.loadBalancer]
+      [[http.services.qlmuxproxy-service.loadBalancer.servers]]
         url = "http://localhost:9180"
 
 
