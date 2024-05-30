@@ -71,6 +71,7 @@ On a PiHole server, you can add the following to the /etc/pihole/custom.list fil
 ```
 192.168.40.16 racedb.wimsey.dev
 192.168.40.16 qlmuxproxy.wimsey.dev
+```
 
 ## DNS Configuration for Internet Access
 
