@@ -1,7 +1,6 @@
 
-NAMECHEAP_API_USER = 'stuartlynne'
-NAMECHEAP_API_KEY = '140badea0c584bb2b054e4a61f8a81f0'
 
+include traefik.env
 
 .PHONY: all to build restart logs
 
@@ -23,14 +22,14 @@ clipboard:
 dirs:
 	mkdir -p letsencrypt logs
 
-provider.env:
+traefik.env:
 	@echo
-	@echo "Copy provider.env-template to provider.env and edit it to suit your needs"
+	@echo "Copy traefik.env-template to traefik.env and edit it to suit your needs"
 	@echo
 	@exit 1
 
 build-clean: clean build
-build: provider.env dirs
+build: traefik.env dirs
 	docker-compose up -d
 
 clean:
