@@ -42,7 +42,7 @@ services:
       - "traefik.http.routers.racedb.rule=Host(${RACEDB_HOSTNAME})"
       - "traefik.http.routers.racedb.entrypoints=websecure"
       - "traefik.http.routers.racedb.tls.certresolver=myresolver"
-      - "traefik.http.routers.racedb.tls.domains[0].sans=*.wimsey.dev"
+      - "traefik.http.routers.racedb.tls.domains[0].sans=${WILDCARD_DOMAIN}"
       - "traefik.http.routers.racedb.service=racedb-service"
       - "traefik.http.services.racedb-service.loadbalancer.server.port=${RACEDB_PORT}"
 
@@ -50,7 +50,7 @@ services:
       - "traefik.http.routers.qlmuxproxy.rule=Host(${QLMUXPROXY_HOSTNAME})"
       - "traefik.http.routers.qlmuxproxy.entrypoints=websecure"
       - "traefik.http.routers.qlmuxproxy.tls.certresolver=myresolver"
-      - "traefik.http.routers.qlmuxproxy.tls.domains[0].sans=*.wimsey.dev"
+      - "traefik.http.routers.qlmuxproxy.tls.domains[0].sans=${WILDCARD_DOMAIN}"
       - "traefik.http.routers.qlmuxproxy.service=qlmuxproxy-service"
       - "traefik.http.services.qlmuxproxy-service.loadbalancer.server.port=${QLMUXPROXY_PORT}"
 
