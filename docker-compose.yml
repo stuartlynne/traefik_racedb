@@ -1,18 +1,21 @@
-# N.b. The traefik.env file is sourced in the Makefile to allow docker-compose
+# N.b. The docker.env file is sourced in the Makefile to allow docker-compose
 # to interpolate variables here in the docker-compose.yml file.
 version: '3'
 services:
   reverse-proxy:
     image: traefik:v3.0
-    container_name: traefik-reverse-proxy
+    container_name: ${CONTAINER_NAME}
     logging:
       options:
         max-size: "10m"
         max-file: "5"
-    environment:
-      TRAEFIK_CERTIFICATESRESOLVERS_LETSENCRYPT_ACME_EMAIL: ${TRAEFIK_EMAIL}
+
+    # Load the dnschallenge environment variables from the dnschallenge.env file.
+    # These are used to configure the DNS challenge for Let's Encrypt and should
+    # be kept secret, do not check into archive or version control.
     env_file:
-      - ./traefik.env
+    - dnschallenge.env
+
     command:
       - "--log.level=${TRAEFIK_LOG_LEVEL}"
       - "--api.insecure=true"

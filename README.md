@@ -1,11 +1,11 @@
 # traefik_racedb
 
 ## Stuart.Lynne@gmail.com
-## Thu May 30 03:18:16 PM PDT 2024
+## Sat Jun  8 12:11:48 PM PDT 2024
 
 ## Overview
 
-This is a simple project to use *Traefik* as a reverse proxy for *RaceDB* and *QLMuxProxy*.
+This is a simple standalone project showing how to use *Traefik* as a reverse proxy for *RaceDB* and *QLMuxProxy*.
 
 This allows *RaceDB* and *QLMuxProxy* to be accessed via *HTTPS* using domain names.
 
@@ -44,7 +44,7 @@ The default access is via HTTP. There are no inherent security issues with this 
 
 
 ## DNS API Configuration
-See traefik.env for the required environment variables for the DNS provider.
+See docker.env for the required environment variables for the DNS provider.
 
 For testing this project I bought a domain name from Namecheap and used their DNS service which has an API that Traefik can use to update the DNS records.
 The cost for this was $10 for the domain name. The API key is available in the Namecheap account settings, but is only enabled if you have 20 domains
