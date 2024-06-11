@@ -38,12 +38,12 @@ For more information on the Traefik DNS Challenge see:
 ```
 export TRAEFIK_EMAIL=stuart.lynne@gmail.com
 export TRAEFIK_DNS_PROVIDER=namecheap
-export WILDCARD_DOMAIN=*.wimsey.dev
+export WILDCARD_DOMAIN=*.wimsey.pro
 
 # Hostnames and ports for RaceDB and QLMuxProxy, 
-export RACEDB_HOSTNAME="racedb.wimsey.dev"
+export RACEDB_HOSTNAME="racedb.wimsey.pro"
 export RACEDB_PORT=9080
-export QLMUXPROXY_HOSTNAME="qlmuxproxy.wimsey.dev"
+export QLMUXPROXY_HOSTNAME="qlmuxproxy.wimsey.pro"
 export QLMUXPROXY_PORT=9180
 
 # Traefik configuration
@@ -64,14 +64,3 @@ export NAMECHEAP_API_KEY=f1282039d149419ba1ae8a38d79e3180
 ```
 
 
-## Makefile
-
-The Makefile contains the following commands:
-
-- make up - start traefik_racedb container
-- make down - stop traefik_racedb container
-- make clean - remove traefik_racedb container
-- make really-clean - remove traefik_racedb container 
-- make bash - start a bash shell in traefik_racedb container
-- make logs - show container logs
-- make test - show variables

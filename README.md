@@ -1,11 +1,10 @@
 # traefik_racedb
-
 ## Stuart.Lynne@gmail.com
 ## Sat Jun  8 12:11:48 PM PDT 2024
 
 ## Overview
 
-This is a simple standalone project showing how to use *Traefik* as a reverse proxy for *RaceDB* and *QLMuxProxy*.
+This is a standalone project showing how to use *Traefik* as a reverse proxy for *RaceDB* and *QLMuxProxy*.
 
 This allows *RaceDB* and *QLMuxProxy* to be accessed via *HTTPS* using domain names.
 
@@ -39,7 +38,7 @@ The default access is via HTTP. There are no inherent security issues with this 
 - port 80, 443, and 8080 are available on the host
 - port 80 and 443 are passed through the firewall if you want to access the services from outside the host
 - an account at a DNS provider that allows access through an API and you have the API key
-- domain names for the services you want to run e.g.: racedb.wimsey.dev, qlmux.wimsey.dev
+- domain names for the services you want to run e.g.: racedb.wimsey.pro, qlmux.wimsey.pro
 - the local DNS server is configured to resolve the domain names to the host IP address
 
 
@@ -53,36 +52,52 @@ registered with them or if you maintain a balance of $50 in your account (this i
 
 ## Installation
 
-1. Clone this [repository](git@github.com:stuartlynne/traefik_racedb.git)
-2. Edit the two files in dynamic to set the domain names for the services.
-3. make build-clean
+Clone the repository to the host where you want to run the services. Copy and edit these files:
 
-## Local DNS Configuration
+```
+  cp docker.env-template docker.env
+  cp dnschallenge.env-template
+```
+
+N.b. The docker.env file contains the environment variables for the Traefik container. 
+The dnschallenge.env file contains the environment variables for the DNS challenge.
+
+*DO NOT* add the dnschallenge.env file to the repository as it contains sensitive information.
+
+
+## DNS Configuration
+
+This requires a *split-horizon* DNS configuration. The domain names used to access the services must resolve to the host IP address
+from within the local network and to the public IP address from the Internet.
+
+### Local DNS Configuration
 
 To access the services from within your network, you will need to configure your local DNS server to resolve the domain names to the host IP address.
 
-If you only need to access the services from the host (or perhaps a small number of hosts), you can add the domain names to the /etc/hosts file on each host.
+If you only need to access the services from the host (or perhaps a small number of hosts), 
+you can add the domain names to the */etc/hosts* file on each host that needs to access them.
+
+On a Linux host you can add the following to the /etc/hosts file:
 ```
-192.168.40.16 racedb.wimsey.dev
-192.168.40.16 qlmuxproxy.wimsey.dev
+192.168.40.16 racedb.wimsey.pro
+192.168.40.16 qlmuxproxy.wimsey.pro
 ```
 
 On a PiHole server, you can add the following to the /etc/pihole/custom.list file:
 ```
-192.168.40.16 racedb.wimsey.dev
-192.168.40.16 qlmuxproxy.wimsey.dev
+192.168.40.16 racedb.wimsey.pro
+192.168.40.16 qlmuxproxy.wimsey.pro
 ```
 
-## DNS Configuration for Internet Access
+### DNS Configuration for Internet Access
 
 If you need to access the services from the Internet, you will need to configure your DNS provider to resolve the domain names to the host IP address
 for each service.
 ```
-racedb.wimsey.dev. CNAME whiskey4.wimsey.co.
+racedb.wimsey.pro. CNAME whiskey4.wimsey.co.
 ```
 
-For this to work your firewall will need to pass through ports 80 and 443 to the host running the services.
-
+Your router firewall will need to forward port *443* to the host running the services.
 
 
 ## RaceDB Configuration
@@ -91,14 +106,14 @@ RaceDB is a Django application and requires that the domain name being used is a
 to the settings.py file, e.g.:
 
 ```
-CSRF_TRUSTED_ORIGINS = ["https://racedb.wimsey.dev", ]
+CSRF_TRUSTED_ORIGINS = ["https://racedb.wimsey.pro", ]
 ```
 
 This can be done by editing the settings.py file in the RaceDB container, e.g. assuming "racedb_app" is the name of the container:
 ```
 docker exec -it racedb_app bash
 cd /RaceDB/RaceDB
-echo "CSRF_TRUSTED_ORIGINS = ['https://racedb.wimsey.dev', ]" >> settings.py
+echo "CSRF_TRUSTED_ORIGINS = ['https://racedb.wimsey.pro', ]" >> settings.py
 ```
 
 ## Traefik Configuration
@@ -116,29 +131,17 @@ more complex setups.
 
 ## Certificate Configuration
 
-To keep this example simple a single wild-card certificate is used for all of the services. E.g: *.wimsey.dev
+To keep this example simple a single wild-card certificate is used for all of the services. E.g: *.wimsey.pro
 
 There are reasonable arguments for using a separate certificate for each service, but that is not covered in this example.
 
+Separate certificates would require separate DNS challenges for each service and would require more complex Traefik configuration.
+But would be more secure. This would be suggested for a production environment if making them available on the Internet.
 
-## Running the 
 
-See the Makefile for the commands to start and stop the services.
+## [Traefik Readme](traefik.md)
 
-```- make build-clean``` will build the containers and start the services
-```- make clean``` will stop the services and remove the containers
+## [Makefile](makefile.md)
 
- ## Related                                     
-  
-| Description | Link |
-| -- | -- |
-|RaceDB           | [https://github.com/esitarski/RaceDB](https://github.com/esitarski/RaceDB)|
-|CrossMgr         | [https://github.com/esitarski/CrossMgr](https://github.com/esitarski/CrossMgr)|
-|qlmux\_proxy     | [https://github.com/stuartlynne/qlmux_proxy](https://github.com/stuartlynne/qlmux_proxy)|
-|qllabels         | [https://github.com/stuartlynne/qllabels/](https://github.com/stuartlynne/qllabels/)|
-|traefik\_racedb  | [https://github.com/stuartlynne/traefik_racedb](https://github.com/stuartlynne/traefik_racedb)|
-|racedb\_qlmux    | [https://github.com/stuartlynne/racedb_qlmux](ttps://github.com/stuartlynne/racedb_qlmux)|
-|wimsey\_timing   | [https://github.com/stuartlynne/wimsey_timing](https://github.com/stuartlynne/wimsey_timing)|
-[traefik acme-dns | [https://doc.traefik.io/traefik/user-guides/docker-compose/acme-dns/](https://doc.traefik.io/traefik/user-guides/docker-compose/acme-dns/)|
-|traefik providers| [https://doc.traefik.io/traefik/https/acme/#providers](https://doc.traefik.io/traefik/https/acme/#providers)|
+## [Related Projects](related.md)
 
